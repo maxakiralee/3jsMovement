@@ -103,10 +103,6 @@ export default function CharacterModel(props: CharacterModelProps) {
     jumpIdle: "Jump_Idle",
     jumpLand: "Jump_Land",
     fall: "Climbing", // This is for falling from high sky
-    action1: "Wave",
-    action2: "Dance",
-    action3: "Cheer",
-    action4: "Attack(1h)",
   };
 
   useEffect(() => {
@@ -159,11 +155,7 @@ export default function CharacterModel(props: CharacterModelProps) {
     // For jump and jump land animation, only play once and clamp when finish
     if (
       curAnimation === animationSet.jump ||
-      curAnimation === animationSet.jumpLand ||
-      curAnimation === animationSet.action1 ||
-      curAnimation === animationSet.action2 ||
-      curAnimation === animationSet.action3 ||
-      curAnimation === animationSet.action4
+      curAnimation === animationSet.jumpLand
     ) {
       action
         .reset()
@@ -194,13 +186,6 @@ export default function CharacterModel(props: CharacterModelProps) {
         resetAnimation()
       );
       (action as any)._mixer._listeners = [];
-
-      // Move hand collider back to initial position after action
-      if (curAnimation === animationSet.action4) {
-        if (rightHandColliderRef.current) {
-          rightHandColliderRef.current.setTranslationWrtParent(vec3({ x: 0, y: 0, z: 0 }))
-        }
-      }
     };
   }, [curAnimation]);
 
@@ -224,16 +209,6 @@ export default function CharacterModel(props: CharacterModelProps) {
       <BallCollider
         args={[0.1]}
         ref={rightHandColliderRef}
-        onCollisionEnter={(e) => {
-          if (curAnimation === animationSet.action4) {
-            // Play punch effect
-            setPunchEffectProp((prev) => ({
-              ...prev,
-              visible: true,
-              play: true,
-            }));
-          }
-        }}
       />
 
       {/* Left hand collider */}
@@ -272,24 +247,6 @@ export default function CharacterModel(props: CharacterModelProps) {
             </Trail>
           </group>
         </group>
-        <SpriteAnimator
-          visible={punchEffectProps.visible}
-          scale={punchEffectProps.scale as any}
-          position={punchEffectProps.position as any}
-          startFrame={punchEffectProps.startFrame}
-          loop={true}
-          onLoopEnd={() => {
-            setPunchEffectProp((prev) => ({
-              ...prev,
-              visible: false,
-              play: false,
-            }));
-          }}
-          play={punchEffectProps.play}
-          numberOfFrames={7}
-          alphaTest={0.01}
-          textureImageURL={"./punchEffect.png"}
-        />
       </group>
     </Suspense>
   );

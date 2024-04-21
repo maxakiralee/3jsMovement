@@ -20,32 +20,6 @@ body,
   touch-action: none;
 }
 
-.controlKeys {
-  position: absolute;
-  width: 20rem;
-  left: 50%;
-  margin-left: -10rem;
-  bottom: 13%;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
-.title {
-  font-size: 0.8rem;
-  color: darkgray;
-  position: absolute;
-  width: 100%;
-  bottom: 2%;
-  text-align: center;
-}
-
-.title > a {
-  color: rgb(79, 189, 249);
-}
-
 @media (max-width: 768px) {
   .controlKeys {
     display: none;
